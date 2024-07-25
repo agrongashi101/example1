@@ -1,66 +1,57 @@
 # example1
 
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
-function ToDoList(){
-     
-    const [tasks, setTasks] = useState([]);
-    const [newTask, setNewTask] = useState("");
+function Component(){
+   
+    const [cars, setCars] = useState([]);
+    const [carYear, setCarYear] = useState(new Date(),getFullTear());
+    const [carBrand, setCarBrand] = useState("");
+    const [carModel, setCarModel] = useState("");
 
-    function InputChange(event){
-        setNewTask(event.target.value);
+    function AddCar(){
+
+        const newCar = {year: carYear, brand: carBrand, model: carModel};
+
+        setCars(c => [...c, newCar]);
+
+        setCarYear(new Date().getFullYear());
+        setCarBrand("");
+        setCarModel("");
     }
 
-    function addTask(){
-        if(newTask.trim() !== ""){
-       setTasks(t => [...t, newTask]);
-       setNewTask("");
-        }
+    function RemoveCar(index){
+        setCars(c => c.filter((_, i) => i !== index));
     }
 
-    function deleteTask(index){
-        
-        const updatedTasks = tasks.filter((_,i) => i !== index);
-        setTasks(updatedTasks);
+    function ChangeYear(event){
+         setCarYear(event.target.value);
     }
 
-    function moveTaskUp(index){
-        if(index > 0){
-            const updatedTasks = [...tasks];
-            [updatedTasks[index], updatedTasks[index - 1]] =  [updatedTasks[index - 1], updatedTasks[index]];
-            setTasks(updatedTasks);
-        }
-    } 
-
-    function moveTaskDown(index){
-        if(index < tasks.length - 1){
-            const updatedTasks = [...tasks];
-            [updatedTasks[index], updatedTasks[index + 1]] =  [updatedTasks[index + 1], updatedTasks[index]];
-            setTasks(updatedTasks);
-        }
+    function ChangeBrand(event){
+        setCarYear(event.target.value);
     }
 
+    function ChangeModel(event){
+        setCarYear(event.target.value);
+    }
 
-    return(<div className="to-do-list">
-            
-            <h1>To-Do-List</h1>
+    return (<div>
+             <h1>List of Car</h1>
+             <ul>
+                {cars.map((car, index) => 
+                <li key={index} onClick={() => RemoveCar(index)}>
+                    {car.brand} {car.model} {car.year}
 
-            <div>
-                <input type="text" placeholder="Enter a task" value={newTask} onChange={InputChange}/>
-                <button className="add-btn" onClick={addTask} >Add</button>
-            </div>
+                </li>)}
+                     
+             </ul>
 
-            <ol>
-                {tasks.map((task, index) =>
-                   <li key={index}>
-                    <span className="text">{task}</span>
-                    <button className="delete-btn" onClick={() => deleteTask(index)}>Delete</button>
-                    <button className="move-btn" onClick={() => moveTaskUp(index)}>⬆️</button>
-                    <button className="move-btn" onClick={() => moveTaskDown(index)}>⬇️</button>
-                   </li>
-                )}
-            </ol>
-    </div>
+             <input type="text" value={carsBrand} onChange={ChangeBrand} placeholder="Enter car brand"/><br/>
+             <input type="text" value={carsModel} onChange={ChangeModel} placeholder="Enter car model"/><br/>
+             <input type="number" value={carYear} onChange={ChangeYear}/>
+             <button onClick={AddCar}>Add Car</button>
+         </div>
     );
 }
-export default ToDoList
+export default Component;
